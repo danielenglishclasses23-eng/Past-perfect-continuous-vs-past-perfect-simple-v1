@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Family - B1 Assessment & Grammar Mastery</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Flashcard Flip Effect */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+    <!-- TOP HEADER / BRANDING AREA -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <!-- Logo & Brand Illustration -->
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+                    <i class="fa-solid fa-people-roof text-2xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-brand-700 to-indigo-700 bg-clip-text text-transparent">English Family</span>
+                        <span class="text-xs bg-indigo-100 text-indigo-700 font-semibold px-2 py-0.5 rounded-full">B1 Level</span>
+                    </div>
+                    <p class="text-xs text-slate-500 font-medium">Interactive Proficiency Evaluation</p>
+                </div>
+            </div>
+
+            <!-- Student Info Fields -->
+            <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                <div class="flex items-center bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-medium text-slate-600">
+                    <i class="fa-regular fa-calendar-check mr-2 text-brand-600"></i>
+                    <span id="currentDateDisplay">Loading date...</span>
+                </div>
+                <div class="relative flex-1 md:w-64">
+                    <i class="fa-regular fa-user absolute left-3 top-2.5 text-slate-400 text-sm"></i>
+                    <input type="text" id="studentName" placeholder="Enter Student Full Name *" class="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all">
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar Container -->
+        <div class="w-full bg-slate-100 h-2 relative">
+            <div id="progressBar" class="bg-gradient-to-r from-brand-500 to-indigo-600 h-2 transition-all duration-500 ease-out w-0"></div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION TABS -->
+    <div class="bg-white border-b border-slate-200 shadow-xs">
+        <div class="max-w-6xl mx-auto px-4 overflow-x-auto no-scrollbar">
+            <nav class="flex space-x-1 sm:space-x-2 py-2 min-w-max" id="navTabs">
+                <button onclick="switchTab('intro')" id="tab-intro" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 bg-brand-50 text-brand-700 border border-brand-200">
+                    <i class="fa-solid fa-house text-sm"></i>
+                    <span>Intro</span>
+                </button>
+                <button onclick="switchTab('part1')" id="tab-part1" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-book-open text-sm"></i>
+                    <span>Part 1: Reading</span>
+                </button>
+                <button onclick="switchTab('part2')" id="tab-part2" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-rectangle-ad text-sm"></i>
+                    <span>Part 2: Ads Match</span>
+                </button>
+                <button onclick="switchTab('part3')" id="tab-part3" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-headphones text-sm"></i>
+                    <span>Part 3: Listening</span>
+                </button>
+                <button onclick="switchTab('part4')" id="tab-part4" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-graduation-cap text-sm"></i>
+                    <span>Part 4: Grammar Guide</span>
+                </button>
+                <button onclick="switchTab('part5')" id="tab-part5" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 hover:bg-slate-100">
+                    <i class="fa-solid fa-pen-to-square text-sm"></i>
+                    <span>Part 5: Practice Test</span>
+                </button>
+                <button onclick="switchTab('part6')" id="tab-part6" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 cursor-not-allowed relative group" title="Complete all 35 questions to unlock results">
+                    <i id="lockIcon" class="fa-solid fa-lock text-xs text-amber-500"></i>
+                    <span>Part 6: Results</span>
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex-grow w-full">
+
+        <!-- INTRO SECTION -->
+        <section id="section-intro" class="space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm relative overflow-hidden">
+                <div class="absolute right-0 top-0 -mt-10 -mr-10 w-64 h-64 bg-brand-50 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-block px-3 py-1 bg-brand-100 text-brand-800 font-bold text-xs uppercase tracking-wider rounded-full mb-3">Welcome Student</span>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-4">English Family B1 Assessment & Masterclass</h1>
+                    <p class="text-slate-600 text-base leading-relaxed mb-6">
+                        This test evaluates your reading, text matching, and listening skills at a **B1 Intermediate level**, alongside a grammar masterclass and testing on **Past Perfect Continuous** vs. **Past Perfect Simple**.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                        <div class="flex items-start space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <div class="w-9 h-9 rounded-xl bg-brand-500 text-white flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-list-check"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm">35 Total Questions</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">5 Reading, 5 Ad Matching, 5 Listening, 20 Grammar MCQs, 5 Open Grammar Questions.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <div class="w-9 h-9 rounded-xl bg-indigo-500 text-white flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm">Natural American Audio</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Part 3 features realistic Web Speech voice synthesis with full controls.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <div class="w-9 h-9 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-book-bookmark"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm">Interactive Grammar Module</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Part 4 provides detailed lessons, structural comparisons, and flip flashcards.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <div class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm">Direct Teacher Submission</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Unlock Part 6 upon completion to copy or email results to <b>Danielenglishclasses23@gmail.com</b>.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-amber-800 text-xs sm:text-sm flex items-center space-x-3 mb-6">
+                        <i class="fa-solid fa-circle-info text-amber-600 text-lg shrink-0"></i>
+                        <span>Please enter your full name in the top header before starting. You can navigate between Parts 1 through 5 freely.</span>
+                    </div>
+
+                    <button onclick="switchTab('part1')" class="bg-gradient-to-r from-brand-600 to-indigo-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-500/25 hover:opacity-95 transition-all flex items-center space-x-2">
+                        <span>Begin Assessment (Part 1)</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 1: READING COMPREHENSION -->
+        <section id="section-part1" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Part 1</span>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Reading Comprehension (B1 Intermediate)</h2>
+                    </div>
+                    <span class="bg-brand-50 text-brand-700 text-xs font-bold px-3 py-1 rounded-full">5 Questions</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Text Article -->
+                    <div class="lg:col-span-6 bg-slate-50 p-6 rounded-2xl border border-slate-200/70 text-slate-700 space-y-4 text-sm sm:text-base leading-relaxed">
+                        <div class="flex items-center space-x-2 text-brand-700 font-bold text-xs uppercase tracking-wide">
+                            <i class="fa-solid fa-newspaper"></i>
+                            <span>Article: The Rise of Digital Nomads</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">Living and Working from Anywhere</h3>
+                        <p>
+                            Over the past few years, the concept of work has changed dramatically. A growing number of professionals, known as digital nomads, are choosing to abandon traditional office spaces in favor of a flexible, location-independent lifestyle. Armed with laptops, high-speed Wi-Fi connections, and portable devices, these individuals travel the world while maintaining their full-time remote jobs or freelance careers.
+                        </p>
+                        <p>
+                            Popular destinations for digital nomads include coastal towns in Southeast Asia, vibrant Latin American cities, and historic European capitals. Many countries have even introduced specialized "Digital Nomad Visas" to attract international remote workers, boosting local hospitality businesses, co-working facilities, and cafes.
+                        </p>
+                        <p>
+                            However, this nomadic lifestyle is not without its challenges. Loneliness, unpredictable internet connections, constantly adapting to time zones, and managing healthcare and tax regulations in foreign countries can cause significant stress. Despite these difficulties, most digital nomads agree that the freedom to explore diverse cultures far outweighs the drawbacks.
+                        </p>
+                    </div>
+
+                    <!-- Questions -->
+                    <div class="lg:col-span-6 space-y-6">
+                        <h3 class="font-bold text-slate-800 text-lg border-b pb-2">Questions 1 to 5</h3>
+                        <div id="p1-questions" class="space-y-6">
+                            <!-- Q1 -->
+                            <div class="q-card bg-white p-4 rounded-2xl border border-slate-200">
+                                <p class="font-semibold text-slate-800 text-sm mb-3">1. What primary equipment enables digital nomads to work remotely?</p>
+                                <div class="space-y-2 text-xs sm:text-sm">
+                                    <label class="q-option"><input type="radio" name="q1" value="A" onchange="registerAnswer(1, 'A')"><span>A) Heavy desktop computers and landline phones</span></label>
+                                    <label class="q-option"><input type="radio" name="q1" value="B" onchange="registerAnswer(1, 'B')"><span>B) Laptops, high-speed Wi-Fi, and portable devices</span></label>
+                                    <label class="q-option"><input type="radio" name="q1" value="C" onchange="registerAnswer(1, 'C')"><span>C) Printed documents and postal mail</span></label>
+                                    <label class="q-option"><input type="radio" name="q1" value="D" onchange="registerAnswer(1, 'D')"><span>D) Company-owned offices located in every country</span></label>
+                                </div>
+                            </div>
+                            <!-- Q2 -->
+                            <div class="q-card bg-white p-4 rounded-2xl border border-slate-200">
+                                <p class="font-semibold text-slate-800 text-sm mb-3">2. How are several governments responding to the rise in remote workers?</p>
+                                <div class="space-y-2 text-xs sm:text-sm">
+                                    <label class="q-option"><input type="radio" name="q2" value="A" onchange="registerAnswer(2, 'A')"><span>A) By introducing specialized Digital Nomad Visas</span></label>
+                                    <label class="q-option"><input type="radio" name="q2" value="B" onchange="registerAnswer(2, 'B')"><span>B) By banning international workers from cafes</span></label>
+                                    <label class="q-option"><input type="radio" name="q2" value="C" onchange="registerAnswer(2, 'C')"><span>C) By forcing nomads to buy property</span></label>
+                                    <label class="q-option"><input type="radio" name="q2" value="D" onchange="registerAnswer(2, 'D')"><span>D) By closing down co-working facilities</span></label>
+                                </div>
+                            </div>
+                            <!-- Q3 -->
+                            <div class="q-card bg-white p-4 rounded-2xl border border-slate-200">
+                                <p class="font-semibold text-slate-800 text-sm mb-3">3. Which of the following is mentioned as a major challenge for nomads?</p>
+                                <div class="space-y-2 text-xs sm:text-sm">
+                                    <label class="q-option"><input type="radio" name="q3" value="A" onchange="registerAnswer(3, 'A')"><span>A) Having too much daily routine and predictable schedules</span></label>
+                                    <label class="q-option"><input type="radio" name="q3" value="B" onchange="registerAnswer(3, 'B')"><span>B) Lack of available transportation in big cities</span></label>
+                                    <label class="q-option"><input type="radio" name="q3" value="C" onchange="registerAnswer(3, 'C')"><span>C) Loneliness and unpredictable internet connections</span></label>
+                                    <label class="q-option"><input type="radio" name="q3" value="D" onchange="registerAnswer(3, 'D')"><span>D) Difficulty finding good local food</span></label>
+                                </div>
+                            </div>
+                            <!-- Q4 -->
+                            <div class="q-card bg-white p-4 rounded-2xl border border-slate-200">
+                                <p class="font-semibold text-slate-800 text-sm mb-3">4. According to the passage, what benefit outweighs the drawbacks for most nomads?</p>
+                                <div class="space-y-2 text-xs sm:text-sm">
+                                    <label class="q-option"><input type="radio" name="q4" value="A" onchange="registerAnswer(4, 'A')"><span>A) Earning higher salaries than local workers</span></label>
+                                    <label class="q-option"><input type="radio" name="q4" value="B" onchange="registerAnswer(4, 'B')"><span>B) The freedom to explore diverse cultures</span></label>
+                                    <label class="q-option"><input type="radio" name="q4" value="C" onchange="registerAnswer(4, 'C')"><span>C) Never having to pay any income tax anywhere</span></label>
+                                    <label class="q-option"><input type="radio" name="q4" value="D" onchange="registerAnswer(4, 'D')"><span>D) Working fewer hours per week than regular office staff</span></label>
+                                </div>
+                            </div>
+                            <!-- Q5 -->
+                            <div class="q-card bg-white p-4 rounded-2xl border border-slate-200">
+                                <p class="font-semibold text-slate-800 text-sm mb-3">5. What is the main purpose of this passage?</p>
+                                <div class="space-y-2 text-xs sm:text-sm">
+                                    <label class="q-option"><input type="radio" name="q5" value="A" onchange="registerAnswer(5, 'A')"><span>A) To persuade readers to quit their office jobs immediately</span></label>
+                                    <label class="q-option"><input type="radio" name="q5" value="B" onchange="registerAnswer(5, 'B')"><span>B) To describe the digital nomad lifestyle, its benefits, and challenges</span></label>
+                                    <label class="q-option"><input type="radio" name="q5" value="C" onchange="registerAnswer(5, 'C')"><span>C) To advertise specific travel agencies in Southeast Asia</span></label>
+                                    <label class="q-option"><input type="radio" name="q5" value="D" onchange="registerAnswer(5, 'D')"><span>D) To explain how to repair laptops while traveling</span></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button onclick="switchTab('part2')" class="bg-brand-600 hover:bg-brand-700 text-white font-bold px-6 py-2.5 rounded-xl transition-all flex items-center space-x-2">
+                        <span>Continue to Part 2</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 2: SENTENCE / TEXT MATCHING (ADVERTISEMENTS) -->
+        <section id="section-part2" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Part 2</span>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Advertisement & Notice Matching</h2>
+                    </div>
+                    <span class="bg-brand-50 text-brand-700 text-xs font-bold px-3 py-1 rounded-full">5 Questions</span>
+                </div>
+
+                <p class="text-slate-600 text-sm mb-6">Read the 5 classified notices (A to E) below. Match each person's statement (Questions 6 to 10) with the most suitable notice.</p>
+
+                <!-- Advertisements Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+                    <!-- Ad A -->
+                    <div class="bg-gradient-to-b from-blue-50 to-white p-4 rounded-2xl border border-blue-200 flex flex-col justify-between">
+                        <div>
+                            <span class="bg-blue-600 text-white font-extrabold px-2 py-0.5 rounded text-xs">NOTICE A</span>
+                            <h4 class="font-bold text-slate-800 text-sm mt-2">Part-Time Barista Needed</h4>
+                            <p class="text-xs text-slate-600 mt-2">Green Mug Cafe seeking friendly coffee enthusiast for weekend morning shifts (7 AM - 1 PM). Previous espresso experience required.</p>
+                        </div>
+                        <span class="text-[11px] font-semibold text-blue-700 mt-3 inline-block">Contact: jobs@greenmug.com</span>
+                    </div>
+
+                    <!-- Ad B -->
+                    <div class="bg-gradient-to-b from-emerald-50 to-white p-4 rounded-2xl border border-emerald-200 flex flex-col justify-between">
+                        <div>
+                            <span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-xs">NOTICE B</span>
+                            <h4 class="font-bold text-slate-800 text-sm mt-2">Studio Apartment for Rent</h4>
+                            <p class="text-xs text-slate-600 mt-2">Cozy downtown studio apartment. Fully furnished, water included. Ideal for a single university student or young professional.</p>
+                        </div>
+                        <span class="text-[11px] font-semibold text-emerald-700 mt-3 inline-block">Rent: $850/month</span>
+                    </div>
+
+                    <!-- Ad C -->
+                    <div class="bg-gradient-to-b from-amber-50 to-white p-4 rounded-2xl border border-amber-200 flex flex-col justify-between">
+                        <div>
+                            <span class="bg-amber-600 text-white font-extrabold px-2 py-0.5 rounded text-xs">NOTICE C</span>
+                            <h4 class="font-bold text-slate-800 text-sm mt-2">Used Mountain Bike For Sale</h4>
+                            <p class="text-xs text-slate-600 mt-2">Excellent condition, 21-speed Trek mountain bicycle. Includes front headlight and helmet. Must pick up locally.</p>
+                        </div>
+                        <span class="text-[11px] font-semibold text-amber-700 mt-3 inline-block">Price: $180 Cash</span>
+                    </div>
+
+                    <!-- Ad D -->
+                    <div class="bg-gradient-to-b from-purple-50 to-white p-4 rounded-2xl border border-purple-200 flex flex-col justify-between">
+                        <div>
+                            <span class="bg-purple-600 text-white font-extrabold px-2 py-0.5 rounded text-xs">NOTICE D</span>
+                            <h4 class="font-bold text-slate-800 text-sm mt-2">Weekend Photography Workshop</h4>
+                            <p class="text-xs text-slate-600 mt-2">Learn outdoor camera techniques, lighting, and digital photo editing from a professional photographer. Beginners welcome!</p>
+                        </div>
+                        <span class="text-[11px] font-semibold text-purple-700 mt-3 inline-block">Date: Saturday 10 AM</span>
+                    </div>
+
+                    <!-- Ad E -->
+                    <div class="bg-gradient-to-b from-rose-50 to-white p-4 rounded-2xl border border-rose-200 flex flex-col justify-between">
+                        <div>
+                            <span class="bg-rose-600 text-white font-extrabold px-2 py-0.5 rounded text-xs">NOTICE E</span>
+                            <h4 class="font-bold text-slate-800 text-sm mt-2">Spanish Conversational Club</h4>
+                            <p class="text-xs text-slate-600 mt-2">Free weekly meetup at Central Library for intermediate Spanish speakers wanting to practice speaking with native tutors.</p>
+                        </div>
+                        <span class="text-[11px] font-semibold text-rose-700 mt-3 inline-block">Every Tuesday 6 PM</span>
+                    </div>
+                </div>
+
+                <!-- Questions List -->
+                <div class="space-y-4">
+                    <!-- Q6 -->
+                    <div class="q-card bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="flex items-start space-x-3">
+                            <span class="w-7 h-7 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">6</span>
+                            <p class="text-slate-800 text-sm font-medium">"I am a college student looking for an affordable, furnished place to live by myself near downtown."</p>
+                        </div>
+                        <div class="flex items-center space-x-2 w-full md:w-auto">
+                            <span class="text-xs font-semibold text-slate-500">Matches Notice:</span>
+                            <select onchange="registerAnswer(6, this.value)" class="bg-white border border-slate-300 rounded-lg text-sm px-3 py-1.5 focus:ring-2 focus:ring-brand-500 font-bold">
+                                <option value="">Select...</option>
+                                <option value="A">Notice A</option>
+                                <option value="B">Notice B</option>
+                                <option value="C">Notice C</option>
+                                <option value="D">Notice D</option>
+                                <option value="E">Notice E</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Q7 -->
+                    <div class="q-card bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="flex items-start space-x-3">
+                            <span class="w-7 h-7 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">7</span>
+                            <p class="text-slate-800 text-sm font-medium">"I have coffee shop work experience and want to earn extra income working early on Saturdays and Sundays."</p>
+                        </div>
+                        <div class="flex items-center space-x-2 w-full md:w-auto">
+                            <span class="text-xs font-semibold text-slate-500">Matches Notice:</span>
+                            <select onchange="registerAnswer(7, this.value)" class="bg-white border border-slate-300 rounded-lg text-sm px-3 py-1.5 focus:ring-2 focus:ring-brand-500 font-bold">
+                                <option value="">Select...</option>
+                                <option value="A">Notice A</option>
+                                <option value="B">Notice B</option>
+                                <option value="C">Notice C</option>
+                                <option value="D">Notice D</option>
+                                <option value="E">Notice E</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Q8 -->
+                    <div class="q-card bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="flex items-start space-x-3">
+                            <span class="w-7 h-7 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">8</span>
+                            <p class="text-slate-800 text-sm font-medium">"I just bought my first digital camera and want to learn how to take better photos outdoor."</p>
+                        </div>
+                        <div class="flex items-center space-x-2 w-full md:w-auto">
+                            <span class="text-xs font-semibold text-slate-500">Matches Notice:</span>
+                            <select onchange="registerAnswer(8, this.value)" class="bg-white border border-slate-300 rounded-lg text-sm px-3 py-1.5 focus:ring-2 focus:ring-brand-500 font-bold">
+                                <option value="">Select...</option>
+                                <option value="A">Notice A</option>
+                                <option value="B">Notice B</option>
+                                <option value="C">Notice C</option>
+                                <option value="D">Notice D</option>
+                                <option value="E">Notice E</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Q9 -->
+                    <div class="q-card bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="flex items-start space-x-3">
+                            <span class="w-7 h-7 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">9</span>
+                            <p class="text-slate-800 text-sm font-medium">"I need an inexpensive, healthy way to commute around town without taking the bus."</p>
+                        </div>
+                        <div class="flex items-center space-x-2 w-full md:w-auto">
+                            <span class="text-xs font-semibold text-slate-500">Matches Notice:</span>
+                            <select onchange="registerAnswer(9, this.value)" class="bg-white border border-slate-300 rounded-lg text-sm px-3 py-1.5 focus:ring-2 focus:ring-brand-500 font-bold">
+                                <option value="">Select...</option>
+                                <option value="A">Notice A</option>
+                                <option value="B">Notice B</option>
+                                <option value="C">Notice C</option>
+                                <option value="D">Notice D</option>
+                                <option value="E">Notice E</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Q10 -->
+                    <div class="q-card bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="flex items-start space-x-3">
+                            <span class="w-7 h-7 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">10</span>
+                            <p class="text-slate-800 text-sm font-medium">"I am studying foreign languages and want a free evening opportunity to improve my spoken fluency."</p>
+                        </div>
+                        <div class="flex items-center space-x-2 w-full md:w-auto">
+                            <span class="text-xs font-semibold text-slate-500">Matches Notice:</span>
+                            <select onchange="registerAnswer(10, this.value)" class="bg-white border border-slate-300 rounded-lg text-sm px-3 py-1.5 focus:ring-2 focus:ring-brand-500 font-bold">
+                                <option value="">Select...</option>
+                                <option value="A">Notice A</option>
+                                <option value="B">Notice B</option>
+                                <option value="C">Notice C</option>
+                                <option value="D">Notice D</option>
+                                <option value="E">Notice E</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between items-center">
+                    <button onclick="switchTab('part1')" class="text-slate-600 hover:text-slate-800 font-bold text-sm px-4 py-2 rounded-xl border border-slate-200">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Part 1
+                    </button>
+                    <button onclick="switchTab('part3')" class="bg-brand-600 hover:bg-brand-700 text-white font-bold px-6 py-2.5 rounded-xl transition-all flex items-center space-x-2">
+                        <span>Continue to Part 3</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 3: LISTENING PRACTICE -->
+        <section id="section-part3" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Part 3</span>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Listening Comprehension</h2>
+                    </div>
+                    <span class="bg-brand-50 text-brand-700 text-xs font-bold px-3 py-1 rounded-full">5 Questions</span>
+                </div>
+
+                <!-- Custom Audio Player Card -->
+                <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-xl mb-8 border border-slate-800">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-500 to-indigo-500 flex items-center justify-center text-white text-2xl shadow-lg">
+                                <i class="fa-solid fa-podcast"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-brand-400 uppercase tracking-widest">American English Audio</span>
+                                <h3 class="text-lg font-bold">Episode 14: Planning the Family Reunion</h3>
+                                <p class="text-xs text-slate-400 mt-1">Duration: ~1 minute 30 seconds • Natural Pace</p>
+                            </div>
+                        </div>
+
+                        <!-- Audio Controls -->
+                        <div class="flex items-center space-x-3 w-full md:w-auto justify-center">
+                            <button id="playAudioBtn" onclick="toggleAudio()" class="w-12 h-12 bg-brand-500 hover:bg-brand-400 text-white rounded-full flex items-center justify-center text-xl shadow-lg shadow-brand-500/30 transition-all">
+                                <i id="playIcon" class="fa-solid fa-play ml-0.5"></i>
+                            </button>
+                            <button onclick="stopAudio()" class="w-10 h-10 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-full flex items-center justify-center text-sm transition-all">
+                                <i class="fa-solid fa-stop"></i>
+                            </button>
+                            <div class="flex items-center space-x-1 bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700 text-xs text-slate-300">
+                                <span>Speed:</span>
+                                <select id="speechRate" onchange="updateSpeechRate()" class="bg-transparent text-white font-bold focus:outline-none">
+                                    <option value="0.9" class="bg-slate-800">0.9x</option>
+                                    <option value="1.0" class="bg-slate-800" selected>1.0x</option>
+                                    <option value="1.1" class="bg-slate-800">1.1x</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transcript Toggle -->
+                    <div class="mt-6 pt-4 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
+                        <span id="audioStatusText"><i class="fa-solid fa-circle text-emerald-500 text-[10px] mr-1"></i> Ready to play using SpeechSynthesis</span>
+                        <button onclick="toggleTranscript()" class="text-brand-400 hover:text-brand-300 font-bold flex items-center space-x-1">
+                            <i class="fa-solid fa-file-lines"></i>
+                            <span id="transcriptBtnText">Show Text Transcript</span>
+                        </button>
+                    </div>
+
+                    <!-- Transcript Box -->
+                    <div id="transcriptBox" class="hidden mt-4 p-4 bg-slate-800/80 rounded-xl border border-slate-700 text-xs text-slate-300 leading-relaxed max-h-48 overflow-y-auto">
+                        <p class="font-bold text-white mb-2">Transcript:</p>
+                        "Hello everybody, and welcome back to English Family Podcast! Today, Sarah and Mark are discussing their upcoming annual summer reunion in Colorado. They had been planning to host it at a lakeside cabin, but because heavy rain had damaged the access bridge last week, they had to quickly pivot to a mountain resort. Mark mentioned that his sister had been searching for affordable catering options for over two weeks before finally booking a local BBQ service. Meanwhile, Sarah's uncle had already bought plane tickets from California before the date change was announced, so they adjusted the schedule to accommodate everyone. The family is expecting around twenty-five relatives this year, making it their largest gathering since 2019!"
+                    </div>
+                </div>
+
+                <!-- Listening Questions -->
+                <div class="space-y-6">
+                    <h3 class="font-bold text-slate-800 text-lg border-b pb-2">Questions 11 to 15</h3>
+
+                    <!-- Q11 -->
+                    <div class="q-card bg-white p-4 rounded-2xl border border-slate-200">
+                        <p class="font-semibold text-slate-800 text-sm mb-3">11. Where is the family reunion taking place this year?</p>
+                        <div class="space-y-2 text-xs sm:text-sm">
+                            <label class="q-option"><input type="radio" name="q11" value="A" onchange="registerAnswer(11, 'A')"><span>A) At a beachfront house in California</span></label>
+                            <label class="q-option"><input type="radio" name="q11" value="B" onchange="registerAnswer(11, 'B')"><span>B) At a mountain resort in Colorado</span></label>
+                            <label class="q-option"><input type="radio" name="q11" value="C" onchange="registerAnswer(11, 'C')"><span>C) At Sarah's uncle's house</span></label>
+                            <label class="q-option"><input type="radio" name="q11" value="D" onchange="registerAnswer(11, 'D')"><span>D) At a hotel in downtown Chicago</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q12 -->
+                    <div class="q-card bg-white p-4 rounded-2xl border border-slate-200">
+                        <p class="font-semibold text-slate-800 text-sm mb-3">12. Why did the family change the original venue location?</p>
+                        <div class="space-y-2 text-xs sm:text-sm">
+                            <label class="q-option"><input type="radio" name="q12" value="A" onchange="registerAnswer(12, 'A')"><span>A) The lakeside cabin was too expensive</span></label>
+                            <label class="q-option"><input type="radio" name="q12" value="B" onchange="registerAnswer(12, 'B')"><span>B) Heavy rain had damaged the access bridge</span></label>
+                            <label class="q-option"><input type="radio" name="q12" value="C" onchange="registerAnswer(12, 'C')"><span>C) The mountain resort had better catering options</span></label>
+                            <label class="q-option"><input type="radio" name="q12" value="D" onchange="registerAnswer(12, 'D')"><span>D) Nobody wanted to go near the lake</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q13 -->
+                    <div class="q-card bg-white p-4 rounded-2xl border border-slate-200">
+                        <p class="font-semibold text-slate-800 text-sm mb-3">13. How long had Mark's sister been searching for catering before booking the BBQ service?</p>
+                        <div class="space-y-2 text-xs sm:text-sm">
+                            <label class="q-option"><input type="radio" name="q13" value="A" onchange="registerAnswer(13, 'A')"><span>A) Less than two days</span></label>
+                            <label class="q-option"><input type="radio" name="q13" value="B" onchange="registerAnswer(13, 'B')"><span>B) Exactly one weekend</span></label>
+                            <label class="q-option"><input type="radio" name="q13" value="C" onchange="registerAnswer(13, 'C')"><span>C) For over two weeks</span></label>
+                            <label class="q-option"><input type="radio" name="q13" value="D" onchange="registerAnswer(13, 'D')"><span>D) Almost three months</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q14 -->
+                    <div class="q-card bg-white p-4 rounded-2xl border border-slate-200">
+                        <p class="font-semibold text-slate-800 text-sm mb-3">14. What had Sarah's uncle done before the date change announcement?</p>
+                        <div class="space-y-2 text-xs sm:text-sm">
+                            <label class="q-option"><input type="radio" name="q14" value="A" onchange="registerAnswer(14, 'A')"><span>A) He had bought plane tickets from California</span></label>
+                            <label class="q-option"><input type="radio" name="q14" value="B" onchange="registerAnswer(14, 'B')"><span>B) He had reserved the lake house</span></label>
+                            <label class="q-option"><input type="radio" name="q14" value="C" onchange="registerAnswer(14, 'C')"><span>C) He had canceled his trip completely</span></label>
+                            <label class="q-option"><input type="radio" name="q14" value="D" onchange="registerAnswer(14, 'D')"><span>D) He had hired a photographer</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q15 -->
+                    <div class="q-card bg-white p-4 rounded-2xl border border-slate-200">
+                        <p class="font-semibold text-slate-800 text-sm mb-3">15. How many relatives are expected to attend the reunion?</p>
+                        <div class="space-y-2 text-xs sm:text-sm">
+                            <label class="q-option"><input type="radio" name="q15" value="A" onchange="registerAnswer(15, 'A')"><span>A) Around 15 relatives</span></label>
+                            <label class="q-option"><input type="radio" name="q15" value="B" onchange="registerAnswer(15, 'B')"><span>B) Around 25 relatives</span></label>
+                            <label class="q-option"><input type="radio" name="q15" value="C" onchange="registerAnswer(15, 'C')"><span>C) More than 50 relatives</span></label>
+                            <label class="q-option"><input type="radio" name="q15" value="D" onchange="registerAnswer(15, 'D')"><span>D) Exactly 10 relatives</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between items-center">
+                    <button onclick="switchTab('part2')" class="text-slate-600 hover:text-slate-800 font-bold text-sm px-4 py-2 rounded-xl border border-slate-200">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Part 2
+                    </button>
+                    <button onclick="switchTab('part4')" class="bg-brand-600 hover:bg-brand-700 text-white font-bold px-6 py-2.5 rounded-xl transition-all flex items-center space-x-2">
+                        <span>Go to Part 4: Grammar Guide</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 4: GRAMMAR GUIDE -->
+        <section id="section-part4" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-8">
+                <div>
+                    <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Part 4</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900">Grammar Masterclass: Past Perfect Continuous vs. Past Perfect Simple</h2>
+                    <p class="text-slate-600 text-sm mt-1">Review the explanations, structures, comparative charts, and flip flashcards before attempting Part 5.</p>
+                </div>
+
+                <!-- Structural Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Past Perfect Continuous -->
+                    <div class="bg-gradient-to-br from-indigo-50 to-white p-6 rounded-2xl border border-indigo-200 shadow-xs">
+                        <span class="px-2.5 py-1 bg-indigo-600 text-white text-xs font-extrabold rounded-md">1. Past Perfect Continuous</span>
+                        <p class="text-xs text-indigo-900 font-bold mt-2">Form: <code class="bg-indigo-100 px-1.5 py-0.5 rounded text-indigo-800">Subject + HAD BEEN + Verb(-ing)</code></p>
+                        
+                        <div class="mt-4 space-y-2 text-xs text-slate-700">
+                            <p class="font-semibold text-slate-900">Primary Usage:</p>
+                            <ul class="list-disc pl-4 space-y-1">
+                                <li>Emphasizes the <b>duration or ongoing activity</b> before another past action or moment.</li>
+                                <li>Focuses on the <b>cause/effect of a continuous action</b> in the past.</li>
+                                <li>Signal words: <i>for 3 hours, all day, since morning, before...</i></li>
+                            </ul>
+                            <div class="bg-white p-3 rounded-xl border border-indigo-100 font-medium text-slate-800 mt-3">
+                                💬 <i>"She <b>had been studying</b> for 4 hours when her laptop suddenly turned off."</i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Past Perfect Simple -->
+                    <div class="bg-gradient-to-br from-blue-50 to-white p-6 rounded-2xl border border-blue-200 shadow-xs">
+                        <span class="px-2.5 py-1 bg-blue-600 text-white text-xs font-extrabold rounded-md">2. Past Perfect Simple</span>
+                        <p class="text-xs text-blue-900 font-bold mt-2">Form: <code class="bg-blue-100 px-1.5 py-0.5 rounded text-blue-800">Subject + HAD + Past Participle (V3)</code></p>
+                        
+                        <div class="mt-4 space-y-2 text-xs text-slate-700">
+                            <p class="font-semibold text-slate-900">Primary Usage:</p>
+                            <ul class="list-disc pl-4 space-y-1">
+                                <li>Emphasizes a <b>completed result or quantity</b> before another past action.</li>
+                                <li>Focuses on <b>how many times</b> or <b>how much</b> was finished.</li>
+                                <li>Signal words: <i>already, never, three times, by the time, before...</i></li>
+                            </ul>
+                            <div class="bg-white p-3 rounded-xl border border-blue-100 font-medium text-slate-800 mt-3">
+                                💬 <i>"She <b>had read</b> 30 pages by the time her laptop turned off."</i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TENSE DIFFERENCES COMPARISON TABLE -->
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <h3 class="font-extrabold text-slate-900 text-base mb-4 flex items-center space-x-2">
+                        <i class="fa-solid fa-code-compare text-brand-600"></i>
+                        <span>Key Comparisons & Distinctions</span>
+                    </h3>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-200/70 text-slate-800 font-bold">
+                                    <th class="p-3 rounded-tl-xl">Tense Pair</th>
+                                    <th class="p-3">Time Reference</th>
+                                    <th class="p-3">Core Focus</th>
+                                    <th class="p-3 rounded-tr-xl">Example Comparison</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 bg-white">
+                                <tr>
+                                    <td class="p-3 font-bold text-indigo-700">Past Perfect Cont. vs. Past Perfect Simple</td>
+                                    <td class="p-3">Before a past moment</td>
+                                    <td class="p-3">Duration & Process vs. Completed Result / Quantity</td>
+                                    <td class="p-3">I <b>had been writing</b> emails all morning. vs. I <b>had written</b> 5 emails by noon.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-emerald-700">Past Perfect Cont. vs. Present Perfect Cont.</td>
+                                    <td class="p-3">Past time connection vs. Present time connection</td>
+                                    <td class="p-3">Action stopped in past vs. Action continues up to now</td>
+                                    <td class="p-3">He <b>had been waiting</b> (then he left). vs. He <b>has been waiting</b> (is still here now).</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-amber-700">Past Perfect Simple vs. Present Perfect Simple</td>
+                                    <td class="p-3">Completed before past point vs. Life experience / Present relevance</td>
+                                    <td class="p-3">Double past vs. Past-to-present connection</td>
+                                    <td class="p-3">When I arrived, they <b>had eaten</b>. vs. They <b>have eaten</b> lunch already today.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- INTERACTIVE FLASHCARDS SECTION -->
+                <div>
+                    <h3 class="font-extrabold text-slate-900 text-base mb-3 flex items-center space-x-2">
+                        <i class="fa-solid fa-clone text-brand-600"></i>
+                        <span>Interactive Study Flashcards (Click to Flip)</span>
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Card 1 -->
+                        <div onclick="flipCard(this)" class="perspective-1000 h-40 cursor-pointer group">
+                            <div class="card-inner relative w-full h-full duration-500 transform-style-3d bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-col justify-between text-center group-hover:border-brand-300">
+                                <div class="card-front absolute inset-0 backface-hidden p-4 flex flex-col items-center justify-center bg-brand-50/50 rounded-2xl border">
+                                    <span class="text-[10px] font-bold text-brand-600 uppercase tracking-widest">Flashcard 1</span>
+                                    <p class="font-bold text-slate-800 text-sm mt-2">What is the formula for Past Perfect Continuous?</p>
+                                    <span class="text-[11px] text-slate-400 mt-2">Click to reveal answer 🔄</span>
+                                </div>
+                                <div class="card-back absolute inset-0 backface-hidden rotate-y-180 p-4 flex flex-col items-center justify-center bg-brand-600 text-white rounded-2xl">
+                                    <p class="font-bold text-sm">Subject + HAD BEEN + Verb(-ing)</p>
+                                    <p class="text-xs opacity-90 mt-1">Example: They had been running.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div onclick="flipCard(this)" class="perspective-1000 h-40 cursor-pointer group">
+                            <div class="card-inner relative w-full h-full duration-500 transform-style-3d bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-col justify-between text-center group-hover:border-brand-300">
+                                <div class="card-front absolute inset-0 backface-hidden p-4 flex flex-col items-center justify-center bg-brand-50/50 rounded-2xl border">
+                                    <span class="text-[10px] font-bold text-brand-600 uppercase tracking-widest">Flashcard 2</span>
+                                    <p class="font-bold text-slate-800 text-sm mt-2">Which tense emphasizes completed quantity?</p>
+                                    <span class="text-[11px] text-slate-400 mt-2">Click to reveal answer 🔄</span>
+                                </div>
+                                <div class="card-back absolute inset-0 backface-hidden rotate-y-180 p-4 flex flex-col items-center justify-center bg-indigo-600 text-white rounded-2xl">
+                                    <p class="font-bold text-sm">Past Perfect Simple</p>
+                                    <p class="text-xs opacity-90 mt-1">Focuses on "how many" or "how much" was done.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div onclick="flipCard(this)" class="perspective-1000 h-40 cursor-pointer group">
+                            <div class="card-inner relative w-full h-full duration-500 transform-style-3d bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-col justify-between text-center group-hover:border-brand-300">
+                                <div class="card-front absolute inset-0 backface-hidden p-4 flex flex-col items-center justify-center bg-brand-50/50 rounded-2xl border">
+                                    <span class="text-[10px] font-bold text-brand-600 uppercase tracking-widest">Flashcard 3</span>
+                                    <p class="font-bold text-slate-800 text-sm mt-2">Past Perfect Continuous vs. Present Perfect Continuous?</p>
+                                    <span class="text-[11px] text-slate-400 mt-2">Click to reveal answer 🔄</span>
+                                </div>
+                                <div class="card-back absolute inset-0 backface-hidden rotate-y-180 p-4 flex flex-col items-center justify-center bg-emerald-600 text-white rounded-2xl">
+                                    <p class="font-bold text-xs">Past Perf. Cont stopped in past.</p>
+                                    <p class="text-[11px] opacity-90 mt-1">Pres. Perf. Cont continues into present moment!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div onclick="flipCard(this)" class="perspective-1000 h-40 cursor-pointer group">
+                            <div class="card-inner relative w-full h-full duration-500 transform-style-3d bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-col justify-between text-center group-hover:border-brand-300">
+                                <div class="card-front absolute inset-0 backface-hidden p-4 flex flex-col items-center justify-center bg-brand-50/50 rounded-2xl border">
+                                    <span class="text-[10px] font-bold text-brand-600 uppercase tracking-widest">Flashcard 4</span>
+                                    <p class="font-bold text-slate-800 text-sm mt-2">Key Signal Words for Past Perfect Cont.?</p>
+                                    <span class="text-[11px] text-slate-400 mt-2">Click to reveal answer 🔄</span>
+                                </div>
+                                <div class="card-back absolute inset-0 backface-hidden rotate-y-180 p-4 flex flex-col items-center justify-center bg-amber-600 text-white rounded-2xl">
+                                    <p class="font-bold text-xs">for (duration), since, all day, before...</p>
+                                    <p class="text-[11px] opacity-90 mt-1">e.g., "for 2 hours before he arrived"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between items-center pt-4 border-t border-slate-100">
+                    <button onclick="switchTab('part3')" class="text-slate-600 hover:text-slate-800 font-bold text-sm px-4 py-2 rounded-xl border border-slate-200">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Part 3
+                    </button>
+                    <button onclick="switchTab('part5')" class="bg-brand-600 hover:bg-brand-700 text-white font-bold px-6 py-2.5 rounded-xl transition-all flex items-center space-x-2">
+                        <span>Proceed to Part 5 Practice Test</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 5: GRAMMAR PRACTICE TEST (25 QUESTIONS) -->
+        <section id="section-part5" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Part 5</span>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Grammar Practice Test</h2>
+                    </div>
+                    <span class="bg-brand-50 text-brand-700 text-xs font-bold px-3 py-1 rounded-full">25 Questions (Q16-Q40)</span>
+                </div>
+
+                <!-- SECTION A: 20 MULTIPLE CHOICE QUESTIONS -->
+                <div class="space-y-6">
+                    <h3 class="font-bold text-slate-800 text-base border-b pb-2 text-brand-700">Section A: Multiple Choice (Questions 16 to 35)</h3>
+                    
+                    <div id="grammar-mcq-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Dynamic or Static MCQ generator -->
+                    </div>
+                </div>
+
+                <!-- SECTION B: 5 OPEN ANSWER QUESTIONS -->
+                <div class="space-y-6 mt-10">
+                    <h3 class="font-bold text-slate-800 text-base border-b pb-2 text-indigo-700">Section B: Open Fill-in-the-Blank Questions (Questions 36 to 40)</h3>
+                    <p class="text-xs text-slate-500">Fill in the blank using the correct form: <b>Past Perfect Simple</b> or <b>Past Perfect Continuous</b> of the verb in parentheses.</p>
+
+                    <div id="grammar-open-container" class="space-y-4">
+                        <!-- Open Q36 to Q40 -->
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between items-center pt-6 border-t border-slate-100">
+                    <button onclick="switchTab('part4')" class="text-slate-600 hover:text-slate-800 font-bold text-sm px-4 py-2 rounded-xl border border-slate-200">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Part 4
+                    </button>
+                    <button id="finishTestBtn" onclick="checkCompletionAndGoResults()" class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold px-6 py-2.5 rounded-xl shadow-md hover:opacity-95 transition-all flex items-center space-x-2">
+                        <i class="fa-solid fa-check-double"></i>
+                        <span>Submit & View Results (Part 6)</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 6: RESULTS & ANSWER KEY (GATED / LOCKED UNTIL ALL ANSWERED) -->
+        <section id="section-part6" class="hidden space-y-6">
+            <div id="resultsContent" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-8">
+                <!-- Banner header filled via JS -->
+                <div id="scoreSummaryBanner"></div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap items-center justify-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <button onclick="sendEmailResults()" class="bg-brand-600 hover:bg-brand-700 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-sm flex items-center space-x-2 text-sm">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>Send Results to Teacher (Danielenglishclasses23)</span>
+                    </button>
+                    <button onclick="copyCondensedAnswers()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-sm flex items-center space-x-2 text-sm">
+                        <i class="fa-solid fa-copy"></i>
+                        <span>Copy Condensed Answers</span>
+                    </button>
+                </div>
+
+                <!-- Detailed Answers Breakdown Table/Cards -->
+                <div>
+                    <h3 class="font-extrabold text-slate-900 text-lg mb-4">Detailed Question Breakdown</h3>
+                    <div id="answersBreakdown" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 text-xs">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+        <div class="max-w-6xl mx-auto px-4 text-center text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <p>© <span id="yearDisplay"></span> English Family Assessment Portal • Prepared for English Language Learners</p>
+            <p>Support: <a href="mailto:Danielenglishclasses23@gmail.com" class="text-brand-600 hover:underline font-semibold">Danielenglishclasses23@gmail.com</a></p>
+        </div>
+    </footer>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl transition-all duration-300 opacity-0 translate-y-4 pointer-events-none z-50 flex items-center space-x-2 text-xs font-semibold">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMsg">Notification message</span>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // TOTAL QUESTIONS IN ASSESSMENT = 35 (Q1-Q10: Reading/Ads, Q11-Q15: Listening, Q16-Q40: Grammar)
+        const TOTAL_QUESTIONS = 35;
+        
+        // Correct Answer Key
+        const ANSWER_KEY = {
+            1: "B", 2: "A", 3: "C", 4: "B", 5: "B",
+            6: "B", 7: "A", 8: "D", 9: "C", 10: "E",
+            11: "B", 12: "B", 13: "C", 14: "A", 15: "B",
+            // MCQ Grammar Q16-Q30
+            16: "A", 17: "B", 18: "B", 19: "A", 20: "B",
+            21: "A", 22: "B", 23: "A", 24: "B", 25: "A",
+            26: "B", 27: "A", 28: "B", 29: "A", 30: "B",
+            // Open Grammar Q31-Q35 (normalized answers)
+            31: "had been waiting",
+            32: "had finished",
+            33: "had been working",
+            34: "had lost",
+            35: "had been studying"
+        };
+
+        // Grammar Multiple Choice Questions Data (20 questions)
+        const GRAMMAR_MCQ_DATA = [
+            { id: 16, q: "She was exhausted because she ______ all day long.", opts: ["A) had been working", "B) had worked"], ans: "A" },
+            { id: 17, q: "By the time the police arrived, the thieves ______.", opts: ["A) had been escaping", "B) had escaped"], ans: "B" },
+            { id: 18, q: "How long ______ before you finally got a response?", opts: ["A) had you waited", "B) had you been waiting"], ans: "B" },
+            { id: 19, q: "They ______ for 20 minutes when it started to snow.", opts: ["A) had been walking", "B) had walked"], ans: "A" },
+            { id: 20, q: "I didn't pass the exam because I ______ only 2 chapters.", opts: ["A) had been reading", "B) had read"], ans: "B" },
+            { id: 21, q: "His hands were covered in grease because he ______ his car.", opts: ["A) had been repairing", "B) had repaired"], ans: "A" },
+            { id: 22, q: "By 2022, author Marcus ______ six bestselling novels.", opts: ["A) had been writing", "B) had written"], ans: "B" },
+            { id: 23, q: "Why were her eyes red? — She ______.", opts: ["A) had been crying", "B) had cried"], ans: "A" },
+            { id: 24, q: "He was hungry because he ______ anything since breakfast.", opts: ["A) hadn't been eating", "B) hadn't eaten"], ans: "B" },
+            { id: 25, q: "The grass was wet because it ______ continuously overnight.", opts: ["A) had been raining", "B) had rained"], ans: "A" },
+            { id: 26, q: "They ______ that house twice before they decided to buy it.", opts: ["A) had been visiting", "B) had visited"], ans: "B" },
+            { id: 27, q: "We ______ for the bus for 45 minutes before it came.", opts: ["A) had been waiting", "B) had waited"], ans: "A" },
+            { id: 28, q: "She didn't have cash because she ______ her wallet.", opts: ["A) had been losing", "B) had lost"], ans: "B" },
+            { id: 29, q: "How long ______ French before you moved to Paris?", opts: ["A) had you been learning", "B) had you learned"], ans: "A" },
+            { id: 30, q: "By midnight, the team ______ the main software bug.", opts: ["A) had been fixing", "B) had fixed"], ans: "B" }
+        ];
+
+        // Grammar Open Answer Questions Data (5 questions)
+        const GRAMMAR_OPEN_DATA = [
+            { id: 31, q: "When I finally saw him, he ______ (wait) for over an hour.", ans: "had been waiting" },
+            { id: 32, q: "She was allowed to go out because she ______ (finish) her homework.", ans: "had finished" },
+            { id: 33, q: "They ______ (work) in the garden all afternoon before the thunderstorm started.", ans: "had been working" },
+            { id: 34, q: "He couldn't get into his apartment because he ______ (lose) his key.", ans: "had lost" },
+            { id: 35, q: "Julia was fluent because she ______ (study) Spanish for 5 years prior to her trip.", ans: "had been studying" }
+        ];
+
+        // User Answers Store
+        let userAnswers = {};
+
+        // INITIALIZATION
+        window.onload = function() {
+            // Set current date
+            const today = new Date();
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            document.getElementById('currentDateDisplay').innerText = today.toLocaleDateString('en-US', options);
+            document.getElementById('yearDisplay').innerText = today.getFullYear();
+
+            // Render Part 5 Grammar Questions
+            renderGrammarQuestions();
+
+            // Update initial progress
+            updateProgress();
+        };
+
+        // RENDER GRAMMAR QUESTIONS IN PART 5
+        function renderGrammarQuestions() {
+            // Render 15 MCQs
+            const mcqContainer = document.getElementById('grammar-mcq-container');
+            mcqContainer.innerHTML = '';
+
+            GRAMMAR_MCQ_DATA.forEach(q => {
+                const card = document.createElement('div');
+                card.className = 'q-card bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs sm:text-sm';
+                card.innerHTML = `
+                    <p class="font-semibold text-slate-800 mb-2 font-medium"><span class="font-bold text-brand-600 mr-1">${q.id}.</span> ${q.q}</p>
+                    <div class="space-y-1.5">
+                        <label class="q-option"><input type="radio" name="q${q.id}" value="A" onchange="registerAnswer(${q.id}, 'A')"><span>${q.opts[0]}</span></label>
+                        <label class="q-option"><input type="radio" name="q${q.id}" value="B" onchange="registerAnswer(${q.id}, 'B')"><span>${q.opts[1]}</span></label>
+                    </div>
+                `;
+                mcqContainer.appendChild(card);
+            });
+
+            // Render 5 Open Questions
+            const openContainer = document.getElementById('grammar-open-container');
+            openContainer.innerHTML = '';
+
+            GRAMMAR_OPEN_DATA.forEach(q => {
+                const card = document.createElement('div');
+                card.className = 'q-card bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs sm:text-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3';
+                card.innerHTML = `
+                    <p class="font-semibold text-slate-800 flex-1"><span class="font-bold text-indigo-600 mr-1">${q.id}.</span> ${q.q}</p>
+                    <input type="text" placeholder="Type answer here..." oninput="registerAnswer(${q.id}, this.value)" class="w-full sm:w-64 px-3 py-1.5 bg-white border border-slate-300 rounded-xl font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                `;
+                openContainer.appendChild(card);
+            });
+        }
+
+        // TAB SWITCHING LOGIC
+        function switchTab(tabId) {
+            // Check if user is attempting to enter Part 6 without completing
+            if (tabId === 'part6') {
+                const answeredCount = Object.keys(userAnswers).filter(k => userAnswers[k] && userAnswers[k].toString().trim() !== '').length;
+                if (answeredCount < TOTAL_QUESTIONS) {
+                    showToast(`Locked! Complete all 35 questions first. (${answeredCount}/${TOTAL_QUESTIONS} done)`, 'amber');
+                    return;
+                }
+            }
+
+            // Hide all sections
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            
+            // Show target section
+            const target = document.getElementById(`section-${tabId}`);
+            if (target) target.classList.remove('hidden');
+
+            // Update Tab styles
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = 'tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 hover:bg-slate-100';
+            });
+
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if (activeTab) {
+                activeTab.className = 'tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center space-x-2 bg-brand-50 text-brand-700 border border-brand-200';
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // REGISTER ANSWERS & PROGRESS
+        function registerAnswer(qNum, value) {
+            if (typeof value === 'string') {
+                value = value.trim();
+            }
+            if (value !== '') {
+                userAnswers[qNum] = value;
+            } else {
+                delete userAnswers[qNum];
+            }
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answeredCount = Object.keys(userAnswers).filter(k => userAnswers[k] && userAnswers[k].toString().trim() !== '').length;
+            const percentage = Math.round((answeredCount / TOTAL_QUESTIONS) * 100);
+
+            const progressBar = document.getElementById('progressBar');
+            if (progressBar) {
+                progressBar.style.width = `${percentage}%`;
+            }
+
+            // Lock/Unlock Part 6
+            const lockIcon = document.getElementById('lockIcon');
+            const tabPart6 = document.getElementById('tab-part6');
+
+            if (answeredCount >= TOTAL_QUESTIONS) {
+                if (lockIcon) {
+                    lockIcon.className = "fa-solid fa-lock-open text-xs text-emerald-500";
+                }
+                if (tabPart6) {
+                    tabPart6.classList.remove('cursor-not-allowed', 'text-slate-400');
+                    tabPart6.classList.add('text-slate-700', 'hover:bg-slate-100');
+                }
+            } else {
+                if (lockIcon) {
+                    lockIcon.className = "fa-solid fa-lock text-xs text-amber-500";
+                }
+            }
+        }
+
+        // CHECK COMPLETION AND SHOW RESULTS
+        function checkCompletionAndGoResults() {
+            const name = document.getElementById('studentName').value.trim();
+            if (!name) {
+                showToast("Please enter your Student Full Name at the top header first!", "amber");
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                document.getElementById('studentName').focus();
+                return;
+            }
+
+            const answeredCount = Object.keys(userAnswers).filter(k => userAnswers[k] && userAnswers[k].toString().trim() !== '').length;
+            if (answeredCount < TOTAL_QUESTIONS) {
+                showToast(`Please answer all questions before submitting! (${answeredCount}/${TOTAL_QUESTIONS} completed)`, "amber");
+                return;
+            }
+
+            generateResultsPage();
+            switchTab('part6');
+        }
+
+        // GENERATE RESULTS BREAKDOWN
+        function generateResultsPage() {
+            let correctCount = 0;
+            const studentName = document.getElementById('studentName').value.trim() || 'Student';
+            const dateStr = document.getElementById('currentDateDisplay').innerText;
+
+            const breakdownContainer = document.getElementById('answersBreakdown');
+            breakdownContainer.innerHTML = '';
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const userAns = (userAnswers[i] || '').toString().toLowerCase().trim();
+                const correctAns = (ANSWER_KEY[i] || '').toString().toLowerCase().trim();
+
+                let isCorrect = false;
+                if (i <= 30) {
+                    // MCQ
+                    isCorrect = (userAns === correctAns);
+                } else {
+                    // Open Answer flexible match
+                    isCorrect = (userAns === correctAns);
+                }
+
+                if (isCorrect) correctCount++;
+
+                const card = document.createElement('div');
+                card.className = `p-3 rounded-2xl border ${isCorrect ? 'bg-emerald-50/60 border-emerald-200 text-emerald-900' : 'bg-rose-50/60 border-rose-200 text-rose-900'} flex flex-col justify-between`;
+                card.innerHTML = `
+                    <div class="flex items-center justify-between font-bold mb-1">
+                        <span>Q${i}</span>
+                        <i class="fa-solid ${isCorrect ? 'fa-circle-check text-emerald-600' : 'fa-circle-xmark text-rose-600'} text-sm"></i>
+                    </div>
+                    <p class="text-[11px]"><span class="font-semibold">Your:</span> <span class="uppercase font-bold">${userAnswers[i] || '—'}</span></p>
+                    <p class="text-[11px] text-slate-500"><span class="font-semibold">Correct:</span> <span class="uppercase font-bold text-slate-700">${ANSWER_KEY[i]}</span></p>
+                `;
+                breakdownContainer.appendChild(card);
+            }
+
+            const scorePercent = Math.round((correctCount / TOTAL_QUESTIONS) * 100);
+
+            const banner = document.getElementById('scoreSummaryBanner');
+            banner.innerHTML = `
+                <div class="bg-gradient-to-r from-brand-700 to-indigo-800 text-white p-6 rounded-2xl shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div>
+                        <span class="bg-white/20 text-white font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider">Evaluation Completed</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold mt-2">${studentName}</h2>
+                        <p class="text-xs text-brand-100 mt-1"><i class="fa-regular fa-calendar mr-1"></i> Date: ${dateStr} • English Family B1 Test</p>
+                    </div>
+                    <div class="bg-white text-slate-900 p-4 rounded-2xl shadow-md text-center min-w-[160px]">
+                        <span class="text-xs uppercase font-bold text-slate-500">Total Score</span>
+                        <div class="text-3xl font-black text-brand-600 my-0.5">${scorePercent}%</div>
+                        <span class="text-xs font-semibold text-slate-600">${correctCount} of ${TOTAL_QUESTIONS} Correct</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // MAILTO GENERATOR FOR TEACHER DANIEL
+        function sendEmailResults() {
+            const name = document.getElementById('studentName').value.trim() || 'Student';
+            const dateStr = document.getElementById('currentDateDisplay').innerText;
+            
+            let correctCount = 0;
+            let summaryList = [];
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const userAns = (userAnswers[i] || '').toString().toLowerCase().trim();
+                const correctAns = (ANSWER_KEY[i] || '').toString().toLowerCase().trim();
+                const isCorrect = (userAns === correctAns);
+                if (isCorrect) correctCount++;
+
+                summaryList.push(`${i}. ${userAnswers[i] || 'N/A'} ${isCorrect ? '✓' : '✗'}`);
+            }
+
+            const percent = Math.round((correctCount / TOTAL_QUESTIONS) * 100);
+            const teacherEmail = "Danielenglishclasses23@gmail.com";
+            const subject = encodeURIComponent(`English Family B1 Test Results - ${name}`);
+            
+            const bodyText = `STUDENT ASSESSMENT RESULTS%0D%0A` +
+                `--------------------------------%0D%0A` +
+                `Student Name: ${name}%0D%0A` +
+                `Date: ${dateStr}%0D%0A` +
+                `Score: ${percent}% (${correctCount}/${TOTAL_QUESTIONS})%0D%0A%0D%0A` +
+                `ITEMIZED ANSWERS:%0D%0A` +
+                summaryList.join(' | ');
+
+            window.location.href = `mailto:${teacherEmail}?subject=${subject}&body=${bodyText}`;
+            showToast("Opening email client...", "emerald");
+        }
+
+        // COPY CONDENSED ANSWERS TO CLIPBOARD
+        function copyCondensedAnswers() {
+            let summaryList = [];
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const userAns = (userAnswers[i] || '').toString().toLowerCase().trim();
+                const correctAns = (ANSWER_KEY[i] || '').toString().toLowerCase().trim();
+                const isCorrect = (userAns === correctAns);
+
+                summaryList.push(`${i}. ${userAnswers[i] || '—'} ${isCorrect ? '✓' : '✗'}`);
+            }
+
+            const textToCopy = summaryList.join(' | ');
+
+            // Use execCommand fallback as requested
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = textToCopy;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+
+            showToast("Condensed answers copied to clipboard!", "emerald");
+        }
+
+        // FLASHCARD FLIP LOGIC
+        function flipCard(cardEl) {
+            const inner = cardEl.querySelector('.card-inner');
+            if (inner) {
+                inner.classList.toggle('rotate-y-180');
+            }
+        }
+
+        // WEB SPEECH SYNTHESIS AUDIO PLAYER
+        let synth = window.speechSynthesis;
+        let isPlaying = false;
+        let utterance = null;
+
+        const transcriptText = `Hello everybody, and welcome back to English Family Podcast! Today, Sarah and Mark are discussing their upcoming annual summer reunion in Colorado. They had been planning to host it at a lakeside cabin, but because heavy rain had damaged the access bridge last week, they had to quickly pivot to a mountain resort. Mark mentioned that his sister had been searching for affordable catering options for over two weeks before finally booking a local BBQ service. Meanwhile, Sarah's uncle had already bought plane tickets from California before the date change was announced, so they adjusted the schedule to accommodate everyone. The family is expecting around twenty-five relatives this year, making it their largest gathering since 2019!`;
+
+        function toggleAudio() {
+            if (!synth) {
+                showToast("Speech synthesis not supported in this browser.", "amber");
+                return;
+            }
+
+            if (synth.speaking && !synth.paused) {
+                synth.pause();
+                isPlaying = false;
+                updateAudioUI();
+            } else if (synth.paused) {
+                synth.resume();
+                isPlaying = true;
+                updateAudioUI();
+            } else {
+                startSpeech();
+            }
+        }
+
+        function startSpeech() {
+            synth.cancel();
+
+            utterance = new SpeechSynthesisUtterance(transcriptText);
+            const rate = parseFloat(document.getElementById('speechRate').value) || 1.0;
+            utterance.rate = rate;
+
+            // Try selecting American English voice
+            const voices = synth.getVoices();
+            const usVoice = voices.find(v => v.lang.includes('en-US') || v.lang.includes('en_US')) || voices[0];
+            if (usVoice) utterance.voice = usVoice;
+
+            utterance.onend = function() {
+                isPlaying = false;
+                updateAudioUI();
+                document.getElementById('audioStatusText').innerHTML = `<i class="fa-solid fa-circle text-emerald-500 text-[10px] mr-1"></i> Audio Finished`;
+            };
+
+            synth.speak(utterance);
+            isPlaying = true;
+            updateAudioUI();
+            document.getElementById('audioStatusText').innerHTML = `<i class="fa-solid fa-spinner fa-spin text-brand-400 text-[10px] mr-1"></i> Playing American Accent Audio...`;
+        }
+
+        function stopAudio() {
+            if (synth) {
+                synth.cancel();
+                isPlaying = false;
+                updateAudioUI();
+                document.getElementById('audioStatusText').innerHTML = `<i class="fa-solid fa-circle text-emerald-500 text-[10px] mr-1"></i> Audio Reset`;
+            }
+        }
+
+        function updateSpeechRate() {
+            if (isPlaying) {
+                startSpeech();
+            }
+        }
+
+        function updateAudioUI() {
+            const playIcon = document.getElementById('playIcon');
+            if (isPlaying) {
+                playIcon.className = "fa-solid fa-pause";
+            } else {
+                playIcon.className = "fa-solid fa-play ml-0.5";
+            }
+        }
+
+        function toggleTranscript() {
+            const box = document.getElementById('transcriptBox');
+            const btnText = document.getElementById('transcriptBtnText');
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                btnText.innerText = "Hide Text Transcript";
+            } else {
+                box.classList.add('hidden');
+                btnText.innerText = "Show Text Transcript";
+            }
+        }
+
+        // TOAST NOTIFICATIONS
+        function showToast(msg, type = "emerald") {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.innerText = msg;
+
+            if (type === 'amber') {
+                toastIcon.className = "fa-solid fa-triangle-exclamation text-amber-400";
+            } else {
+                toastIcon.className = "fa-solid fa-circle-check text-emerald-400";
+            }
+
+            toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
